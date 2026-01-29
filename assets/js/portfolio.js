@@ -408,7 +408,7 @@ const educationData = [
 ];
 
 // ==================== DOM Ready ====================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {    
     initPreloader();
     initNavigation();
     initAnimations();
@@ -421,6 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initParallax();
     // Initialize scroll effects AFTER dynamic content is loaded
     initScrollEffects();
+    
+    console.log('All init functions completed');
 });
 
 // ==================== Preloader ====================
@@ -565,6 +567,9 @@ function initAnimations() {
     
     gsap.registerPlugin(ScrollTrigger);
     
+    // Set default for all GSAP animations - don't leave elements invisible
+    gsap.defaults({ overwrite: 'auto' });
+    
     // Hero section animations
     gsap.from('.hero-title', {
         opacity: 0,
@@ -658,32 +663,35 @@ function initAnimations() {
         ease: 'sine.inOut'
     });
     
-    // Timeline animations
+    // Timeline animations - use ScrollTrigger to animate elements when they enter viewport
     gsap.utils.toArray('.timeline-item').forEach((item, index) => {
+        // Set initial visible state
+        gsap.set(item, { opacity: 1, x: 0 });
         gsap.from(item, {
             scrollTrigger: {
                 trigger: item,
-                start: 'top 80%',
-                toggleActions: 'play none none reverse'
+                start: 'top 85%',
+                toggleActions: 'play none none none'
             },
             opacity: 0,
-            x: index % 2 === 0 ? -50 : 50,
-            duration: 0.8,
+            x: -30,
+            duration: 0.6,
             ease: 'power2.out'
         });
     });
     
     // Skills cards animation
     gsap.utils.toArray('.skill-category').forEach((card, index) => {
+        gsap.set(card, { opacity: 1, y: 0 });
         gsap.from(card, {
             scrollTrigger: {
                 trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+                start: 'top 90%',
+                toggleActions: 'play none none none'
             },
             opacity: 0,
-            y: 50,
-            duration: 0.6,
+            y: 30,
+            duration: 0.5,
             delay: index * 0.1,
             ease: 'power2.out'
         });
@@ -691,65 +699,68 @@ function initAnimations() {
     
     // Project cards animation
     gsap.utils.toArray('.project-card').forEach((card, index) => {
+        gsap.set(card, { opacity: 1, y: 0, scale: 1 });
         gsap.from(card, {
             scrollTrigger: {
                 trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+                start: 'top 90%',
+                toggleActions: 'play none none none'
             },
             opacity: 0,
-            y: 60,
-            scale: 0.95,
-            duration: 0.7,
-            delay: index * 0.1,
+            y: 40,
+            scale: 0.98,
+            duration: 0.5,
+            delay: (index % 3) * 0.1,
             ease: 'power2.out'
         });
     });
     
     // Section title animations
     gsap.utils.toArray('.section-title').forEach(title => {
+        gsap.set(title, { opacity: 1, y: 0 });
         gsap.from(title, {
             scrollTrigger: {
                 trigger: title,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+                start: 'top 90%',
+                toggleActions: 'play none none none'
             },
             opacity: 0,
-            y: 30,
-            duration: 0.8,
-            ease: 'power2.out'
-        });
-    });
-    
-    // Education cards
-    gsap.utils.toArray('.education-card').forEach((card, index) => {
-        gsap.from(card, {
-            scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
-            },
-            opacity: 0,
-            y: 40,
-            rotation: -2,
-            duration: 0.8,
-            delay: index * 0.2,
+            y: 20,
+            duration: 0.6,
             ease: 'power2.out'
         });
     });
     
     // Blog cards
     gsap.utils.toArray('.blog-card').forEach((card, index) => {
+        gsap.set(card, { opacity: 1, y: 0 });
         gsap.from(card, {
             scrollTrigger: {
                 trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+                start: 'top 90%',
+                toggleActions: 'play none none none'
             },
             opacity: 0,
-            y: 50,
-            duration: 0.6,
-            delay: index * 0.15,
+            y: 30,
+            duration: 0.5,
+            delay: index * 0.1,
+            ease: 'power2.out'
+        });
+    });
+    
+    // Education cards
+    gsap.utils.toArray('.education-card').forEach((card, index) => {
+        gsap.set(card, { opacity: 1, y: 0 });
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 90%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            y: 30,
+            duration: 0.5,
+            delay: index * 0.1,
             ease: 'power2.out'
         });
     });
@@ -770,21 +781,25 @@ function triggerEntranceAnimations() {
 // ==================== Experience ====================
 function initExperience() {
     const experienceTimeline = document.getElementById('experienceTimeline');
+    console.log('initExperience - element found:', !!experienceTimeline);
     if (!experienceTimeline) return;
     
     // Show only first 4 experiences on index.html
     const displayExperiences = experienceData.slice(0, 4);
+    console.log('Experience items to display:', displayExperiences.length);
     
     displayExperiences.forEach((exp, index) => {
         const item = createExperienceItem(exp, index);
         experienceTimeline.appendChild(item);
     });
+    console.log('Experience items added');
 }
 
 function createExperienceItem(exp, index) {
     const item = document.createElement('div');
-    item.className = 'timeline-item fade-in';
-    item.style.animationDelay = `${index * 0.1}s`;
+    item.className = 'timeline-item';
+    item.style.opacity = '1';
+    item.style.transform = 'translateY(0)';
     
     item.innerHTML = `
         <div class="timeline-dot"></div>
@@ -829,8 +844,9 @@ function initEducation() {
 
 function createEducationCard(edu, index) {
     const card = document.createElement('div');
-    card.className = 'education-card glass-card fade-in';
-    card.style.animationDelay = `${index * 0.1}s`;
+    card.className = 'education-card glass-card';
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
     
     card.innerHTML = `
         <div class="education-icon">
@@ -851,21 +867,25 @@ function createEducationCard(edu, index) {
 // ==================== Projects ====================
 function initProjects() {
     const projectsGrid = document.getElementById('projectsGrid');
+    console.log('initProjects - element found:', !!projectsGrid);
     if (!projectsGrid) return;
     
     // Show only featured projects on index.html (limit to 6)
     const featuredProjects = projectsData.filter(p => p.featured).slice(0, 6);
+    console.log('Featured projects to display:', featuredProjects.length);
     
     featuredProjects.forEach((project, index) => {
         const card = createProjectCard(project, index);
         projectsGrid.appendChild(card);
     });
+    console.log('Project cards added');
 }
 
 function createProjectCard(project, index) {
     const card = document.createElement('div');
-    card.className = `project-card ${project.featured ? 'featured' : ''} fade-in`;
-    card.style.animationDelay = `${index * 0.1}s`;
+    card.className = `project-card ${project.featured ? 'featured' : ''}`;
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
     
     card.innerHTML = `
         <div class="project-image">
