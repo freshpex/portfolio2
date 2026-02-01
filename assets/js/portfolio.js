@@ -113,7 +113,7 @@ const projectsData = [
         tags: ["React", "CSS3", "Responsive Design"],
         liveLink: "https://johnfashion.vercel.app",
         githubLink: "https://github.com/freshpex/fashion-portfolio",
-        featured: false,
+        featured: true,
         category: "frontend"
     },
     {
@@ -123,7 +123,7 @@ const projectsData = [
         tags: ["React", "Node.js", "REST API"],
         liveLink: "https://par-eight.vercel.app",
         githubLink: "https://github.com/freshpex/parcel",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -144,7 +144,7 @@ const projectsData = [
         tags: ["React", "Node.js", "Express", "MongoDB"],
         liveLink: "https://franch-express.onrender.com/",
         githubLink: "https://github.com/freshpex/Franch-Express-Courier",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -154,7 +154,7 @@ const projectsData = [
         tags: ["React", "Node.js", "Audio API", "MongoDB"],
         liveLink: "https://music-two-ecru.vercel.app",
         githubLink: "https://github.com/freshpex/music",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -164,7 +164,7 @@ const projectsData = [
         tags: ["React", "Node.js", "Analytics", "Payment Integration"],
         liveLink: "https://influencer-gamma.vercel.app",
         githubLink: "https://github.com/freshpex/influencer-marketing",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -174,7 +174,7 @@ const projectsData = [
         tags: ["Flask", "Python", "SQLite", "Authentication"],
         liveLink: "https://bdclient.vercel.app/",
         githubLink: "https://github.com/freshpex/online-bank-of-bd-client-test/tree/master",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -214,7 +214,7 @@ const projectsData = [
         tags: ["Flask", "Python", "Authentication", "Banking"],
         liveLink: "https://banklinees.vercel.app",
         githubLink: "https://github.com/freshpex/Bankist-Web-App",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -224,7 +224,7 @@ const projectsData = [
         tags: ["Flask", "Python", "SQLite", "Banking"],
         liveLink: "https://bankiste.vercel.app/",
         githubLink: "https://github.com/freshpex/Flask-Bank-line",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -234,17 +234,17 @@ const projectsData = [
         tags: ["Python", "Flask", "Health Tech", "Analytics"],
         liveLink: "https://eudaimonia.onrender.com/",
         githubLink: "https://github.com/iamfaqeehhokyky/Eudaimonia",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
-        title: "Utravel - Modern Flight Booking System",
+        title: "FlyWings - Modern Flight Booking System",
         description: "A React-based flight booking platform with real-time search, interactive booking flow, and responsive design for seamless user experience.",
         image: "assets/images/project-page/p1.png",
         tags: ["React", "REST API", "Booking System"],
         liveLink: "https://skiways.vercel.app/",
         githubLink: "https://github.com/freshpex/airplane-flight",
-        featured: false,
+        featured: true,
         category: "fullstack"
     },
     {
@@ -870,8 +870,8 @@ function initProjects() {
     console.log('initProjects - element found:', !!projectsGrid);
     if (!projectsGrid) return;
     
-    // Show only featured projects on index.html (limit to 6)
-    const featuredProjects = projectsData.filter(p => p.featured).slice(0, 6);
+    // Show ALL featured projects on index.html
+    const featuredProjects = projectsData.filter(p => p.featured);
     console.log('Featured projects to display:', featuredProjects.length);
     
     featuredProjects.forEach((project, index) => {
@@ -879,6 +879,19 @@ function initProjects() {
         projectsGrid.appendChild(card);
     });
     console.log('Project cards added');
+    
+    // Show other (non-featured) projects in separate section
+    const otherProjectsGrid = document.getElementById('otherProjectsGrid');
+    if (otherProjectsGrid) {
+        const otherProjects = projectsData.filter(p => !p.featured);
+        console.log('Other projects to display:', otherProjects.length);
+        
+        otherProjects.forEach((project, index) => {
+            const card = createProjectCard(project, index);
+            otherProjectsGrid.appendChild(card);
+        });
+        console.log('Other project cards added');
+    }
 }
 
 function createProjectCard(project, index) {
